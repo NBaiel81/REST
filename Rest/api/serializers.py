@@ -17,3 +17,8 @@ class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model=Author
         fields='__all__'
+
+class OrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Order
+        fields=['id','user','book','address','date_create','status']

@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 class Book(models.Model):
     title=models.CharField(max_length=200)
@@ -18,4 +19,16 @@ class Author(models.Model):
     def __str__(self):
         return self.name
 
+class Order(models.Model):
+    statuses=(
+        ('pending','pending'),
+        ('finished','finished'),
+    )
+    user=models.ForeignKey(User,on_delete=models.SET_NULL,null=True)
+    book=models.ForeignKey(Book,on_delete=models.SET_NULL,null=True)
+    date_create=models.DateTimeField(auto_now_add=True)
+    address=models.CharField(max_length=200)
+    status=models.CharField(choices=statuses,max_length=20, default='pending')
+    def __str__(self):
+        return f'заказ с товаром: {self.book.title}'
 
