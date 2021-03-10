@@ -49,4 +49,22 @@ class OrderModelViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
 
+class ModifyOrder(views.APIView):
+    def put(self,request,order_id):
+        order=Order.objects.get(id=order_id)
+        print(request.data)
+        serializer=OrderSerializer(order,data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors)
+    def delete(self,request,order_id):
+        order=Order.objects.get(id=order_id)
+        order.delete()
+        return Response({'data':'successfully deleted!'})
 
+class MyOrderAPIView(views.APIView):
+    def get(self,request,*args,**kwargs):
+        orders=Order.objects.filter(user=request.user)
+        serializer=OrderSerializer(orders,many=True)
+        return Response(serializer.data)
