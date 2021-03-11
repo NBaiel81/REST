@@ -4,6 +4,7 @@ class Book(models.Model):
     title=models.CharField(max_length=200)
     year =models.DateField()
     description=models.CharField(max_length=200)
+    abbr=models.CharField(max_length=20,unique=True)
     book_file=models.FileField(blank=True)
     author = models.ForeignKey('Author',on_delete=models.SET_NULL, blank=True, null=True,related_name='books')
 
@@ -31,4 +32,6 @@ class Order(models.Model):
     status=models.CharField(choices=statuses,max_length=20, default='pending')
     def __str__(self):
         return f'заказ с товаром: {self.book.title}'
+
+
 

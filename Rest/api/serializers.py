@@ -8,6 +8,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields='__all__'
 
 class BookSerializer(serializers.ModelSerializer):
+    author=serializers.StringRelatedField()
     class Meta:
         model=Book
         fields=['id','title','description','year']
