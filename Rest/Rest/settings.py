@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'api',
     'quickstart',
-    'coments'
+    'coments',
+    'estimate'
 ]
 
 MIDDLEWARE = [
