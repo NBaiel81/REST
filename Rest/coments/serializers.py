@@ -21,9 +21,20 @@ class BookDetailSerializer(ModelSerializer):
     rate_set=RateModelSerializer(many=True)
     comment_set=CommentSerializer(many=True)
     avg_rate=SerializerMethodField()
+    sale_price=SerializerMethodField()
+
+
+
     class Meta:
         model=Book
-        fields=['id','title','description','price','year','author','comment_set','rate_set','avg_rate']
+        fields=['id','title','description','price','year','author','comment_set','rate_set','avg_rate','sale','sale_price','sale_amount']
+
+    def get_sale_price(self,obj):
+        sale_price =0
+        if obj.sale:
+            sale_price= obj.price - obj.price * (obj.sale_amount/100)
+            return sale_price
+        return obj.price
 
     def get_avg_rate(self,obj):
         count=0
@@ -35,6 +46,7 @@ class BookDetailSerializer(ModelSerializer):
             print(total_sum)
             print('eee')
         return round(total_sum/count,1)
+
 
 
 
