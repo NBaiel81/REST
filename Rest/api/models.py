@@ -7,7 +7,7 @@ class Book(models.Model):
     abbr=models.CharField(max_length=20,unique=True)
     book_file=models.FileField(blank=True)
     author = models.ForeignKey('Author',on_delete=models.SET_NULL, blank=True, null=True,related_name='books')
-
+    price=models.PositiveIntegerField(verbose_name=None)
     def __str__(self):
         return self.title
 
