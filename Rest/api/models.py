@@ -9,7 +9,7 @@ class Book(models.Model):
     author = models.ForeignKey('Author',on_delete=models.SET_NULL, blank=True, null=True,related_name='books')
     price=models.PositiveIntegerField(verbose_name=None)
     sale=models.BooleanField(default=False)
-    sale_amount=models.PositiveIntegerField(max_length=100)
+    sale_amount=models.PositiveIntegerField()
     def __str__(self):
         return self.title
 
