@@ -3,6 +3,8 @@ from rest_framework.response import Response
 from rest_framework import viewsets, status
 from .serializers import *
 from rest_framework import views
+from datetime import datetime
+from django.utils import timezone
 
 
 class UserView(views.APIView):
@@ -48,6 +50,7 @@ class OrderAPIView(views.APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
+        return Response(serializer.errors)
 
 
 class OrderModelViewSet(viewsets.ModelViewSet):
@@ -58,7 +61,13 @@ class OrderModelViewSet(viewsets.ModelViewSet):
 class ModifyOrder(views.APIView):
     def put(self, request, order_id):
         order = Order.objects.get(id=order_id)
-        print(request.data)
+        x1=(timezone.now()-order.date_create)[0]
+        y1=(timezone.now()-order.date_created)[2:4]
+        x=int(x1)
+        y=int(y1)
+        print(x,y)
+        min=(x*60)+y
+
         serializer = OrderSerializer(order, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -66,6 +75,7 @@ class ModifyOrder(views.APIView):
         return Response(serializer.errors)
 
     def delete(self, request, order_id):
+
         order = Order.objects.get(id=order_id)
         order.delete()
         return Response({'data': 'successfully deleted!'})

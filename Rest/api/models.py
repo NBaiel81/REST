@@ -27,11 +27,17 @@ class Order(models.Model):
         ('pending','pending'),
         ('finished','finished'),
     )
+    quantity=models.PositiveIntegerField(default=1)
     user=models.ForeignKey(User,on_delete=models.SET_NULL,null=True)
     book=models.ForeignKey(Book,on_delete=models.SET_NULL,null=True)
     date_create=models.DateTimeField(auto_now_add=True)
-    address=models.CharField(max_length=200)
+    address=models.CharField(max_length=200, null=True)
     status=models.CharField(choices=statuses,max_length=20, default='pending')
+    payment_type = models.CharField(choices=(
+        ('card','card'),
+        ('cash','cash'),
+    ),max_length=10,default='cash')
+
     def __str__(self):
         return f'заказ с товаром: {self.book.title}'
 
