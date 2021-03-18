@@ -61,14 +61,20 @@ class OrderModelViewSet(viewsets.ModelViewSet):
 class ModifyOrder(views.APIView):
     def put(self, request, order_id):
         order = Order.objects.get(id=order_id)
-        x1=(timezone.now()-order.date_create)[0]
-        y1=(timezone.now()-order.date_created)[2:4]
-        x=int(x1)
-        y=int(y1)
-        print(x,y)
-        min=(x*60)+y
+        hours=timezone.now().hour * 60
+        minutes=timezone.now().minute
+        result1=hours+minutes
+        result2=(order.date_create.hour*60)+order.date_create.minute
+        serializer=OrderSerializer(order,data=request.data)
+        print(abs(result1-result2))
+        if serializer.is_valid():
+            if abs(result1-result2)<=5:
+                serializer.save()
+                return Response({"data":"OK!!!"})
+            else:
+                return Response({"data":"Time is up!"})
+        return Response(serializer.errors)
 
-        serializer = OrderSerializer(order, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
