@@ -28,11 +28,13 @@ class Order(models.Model):
         ('finished','finished'),
     )
     quantity=models.PositiveIntegerField(default=1)
+    promocode =models.CharField(null=True,blank=True,max_length=20)
     user=models.ForeignKey(User,on_delete=models.SET_NULL,null=True)
     book=models.ForeignKey(Book,on_delete=models.SET_NULL,null=True)
     date_create=models.DateTimeField(auto_now_add=True)
-    address=models.CharField(max_length=200, null=True)
+    address=models.CharField(max_length=200, null=True,blank=True)
     status=models.CharField(choices=statuses,max_length=20, default='pending')
+    total_price = models.PositiveIntegerField(default=0)
     payment_type = models.CharField(choices=(
         ('card','card'),
         ('cash','cash'),
